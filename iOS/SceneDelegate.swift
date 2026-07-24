@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private static let bannerHeight: CGFloat = 30
@@ -66,6 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillEnterForeground(_ scene: UIScene) {
         contentHideView.removeFromSuperview()
+        AppLockManager.shared.checkLock()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -73,6 +75,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        AppLockManager.shared.reset()
+
         let incognitoEnabled = UserDefaults.standard.bool(forKey: "General.incognitoMode")
         if incognitoEnabled {
             (scene as? UIWindowScene)?.windows.first?.addSubview(contentHideView)
